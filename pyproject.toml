@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "revamp"
+version = "0.1.0"
+description = "Dependencies revamping"
+authors = ["Abiodun Sotunde <abiodun.sotunde@moneymeets.com>"]
+
+packages = [
+    { include = "actions_helper" }
+]
+
+[tool.poetry.dependencies]
+python = "~3.12"
+
+click="*"
+poetry = "^1.8.3"
+cleo = "^2.1.0"
+pygithub = "^2.4.0"
+
+[tool.poetry.dev-dependencies]
+ruff = "*"
+pytest = "*"
+pytest-cov = "*"
+
+
+[tool.poetry.scripts]
+actions_helper = 'actions_helper.main:cli'
+
+[tool.coverage.run]
+branch = true
+source = ["."]
+omit = ["tests/*.py"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
