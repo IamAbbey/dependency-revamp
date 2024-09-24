@@ -1,5 +1,6 @@
 import re
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Literal, Optional, Sequence
 
 from actions_helper.common.utils import _run_process
@@ -30,8 +31,11 @@ class UpdateCommandOutput:
 VERSION_NUMBER_REGEX = r"\d+\.\d+\.?(?:\*|\d+)?.*"
 
 
-def process_outdated_packages() -> Sequence[ShowCommandOutput]:
-    process = _run_process("poetry show  --latest --top-level --no-ansi", capture_output=True)
+def process_outdated_packages(revamp_dir: Path) -> Sequence[ShowCommandOutput]:
+    process = _run_process(
+        f"poetry show --latest --top-level --no-ansi --directory {revamp_dir.resolve()}",
+        capture_output=True,
+    )
 
     if process.returncode != 0:
         print(process.stderr)
@@ -87,8 +91,11 @@ def process_outdated_packages() -> Sequence[ShowCommandOutput]:
     return show_outputs
 
 
-def poetry_update(dry_run: bool) -> Sequence[UpdateCommandOutput]:
-    process = _run_process(f"poetry update {'--dry-run' if dry_run else ''}", capture_output=True)
+def poetry_update(dry_run: bool, revamp_dir: Path) -> Sequence[UpdateCommandOutput]:
+    process = _run_process(
+        f"poetry update --directory {revamp_dir.resolve()} {'--dry-run' if dry_run else ''}",
+        capture_output=True,
+    )
 
     # status_code = tester.execute("show  --latest --top-level --no-ansi")
 

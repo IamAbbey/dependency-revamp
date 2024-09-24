@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import click
 
 from actions_helper.commands.revamp import poetry_update, process_outdated_packages
@@ -12,14 +14,15 @@ def cli():
 
 @cli.command(name="revamp-dependencies")
 @click.option("--dry-run", default="true", type=str)
+@click.option("--revamp-dir", default=Path.cwd(), type=click.Path(file_okay=False, exists=True, path_type=Path))
 @click.option("--toplevel", default="false", type=str)
 @click.option("--reviewers", default="", type=str)
-def cmd_revamp(dry_run: str, reviewers: str, toplevel: str):
+def cmd_revamp(dry_run: str, reviewers: str, toplevel: str, revamp_dir: Path):
     dry_run = True if dry_run.lower() == "true" else False
     toplevel = True if toplevel.lower() == "true" else True
     reviewers = reviewers.split(",") if reviewers else []
-    outdated_packages = process_outdated_packages()
-    packaged_update = poetry_update(dry_run=dry_run)
+    outdated_packages = process_outdated_packages(revamp_dir=revamp_dir)
+    packaged_update = poetry_update(dry_run=dry_run, revamp_dir=revamp_dir)
     package_update_names = [package.package_name for package in packaged_update]
 
     rendered_message = render_string_from_template(
