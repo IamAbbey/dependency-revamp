@@ -38,6 +38,7 @@ runs:
         with_checks: 'false'
         # ToDo: Re-enable cache when https://github.com/actions/setup-python/issues/361 is fixed
         poetry_cache_enabled: 'false'
+        ssh_key: ${{ inputs.ssh_key }}
 
     - name: Revamp dependencies
       shell: bash
