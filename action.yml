@@ -34,13 +34,13 @@ runs:
     - name: Revamp dependencies
       shell: bash
       id: revamp-dependencies
-      working-directory: ${{ inputs.working_directory }}
+      working-directory: ${{ github.action_path }}
       run: |        
         if [ ! -z "${{ inputs.ssh_key }}" ]; then
             eval "$(ssh-agent -s)"
             ssh-add - <<< "${{ inputs.ssh_key }}"
         fi
 
-        poetry run --directory ${{ github.action_path }} actions_helper revamp-dependencies \
+        poetry run --directory ${{ inputs.working_directory }} actions_helper revamp-dependencies \
           --dry-run ${{ inputs.dry_run }} \
           --reviewers ${{ inputs.reviewers }}
