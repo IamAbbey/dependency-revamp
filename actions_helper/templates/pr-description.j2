@@ -3,7 +3,7 @@
 _(Pull request to demonstrate what a GitHub Action could do in the future, please don't merge for now)_
 
 This PR contains the following updates:
-{% for action, items in package_update_names|groupby("action") %}
+{% for action, items in packaged_update|groupby("action") %}
 
 --------
 ## {{ action }}

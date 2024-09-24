@@ -26,7 +26,7 @@ def cmd_revamp(dry_run: str, reviewers: str, toplevel: str):
         "pr-description.j2",
         context={
             "toplevel": toplevel,
-            "package_update_names": package_update_names,
+            "packaged_update": packaged_update,
             "outdated_package_names": [package.package_name for package in outdated_packages],
             "skipped": [package for package in outdated_packages if package.package_name not in package_update_names],
         },
