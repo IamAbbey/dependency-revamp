@@ -26,6 +26,7 @@ runs:
     - name: Setup Python + Poetry
       uses: moneymeets/action-setup-python-poetry@master
       with:
+        working_directory: ${{ github.action_path }}
         with_checks: 'false'
         # ToDo: Re-enable cache when https://github.com/actions/setup-python/issues/361 is fixed
         poetry_cache_enabled: 'false'
@@ -33,8 +34,12 @@ runs:
     - name: Revamp dependencies
       shell: bash
       id: revamp-dependencies
-      working-directory: ${{ inputs.working_directory }}
-      run: |        
+      run: |  
+        
+        poetry shell
+        
+        cd ${{ github.action_path }}
+        
         if [ ! -z "${{ inputs.ssh_key }}" ]; then
             eval "$(ssh-agent -s)"
             ssh-add - <<< "${{ inputs.ssh_key }}"
