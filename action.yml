@@ -23,8 +23,8 @@ runs:
 
     - name: Setup Python + Poetry
       uses: moneymeets/action-setup-python-poetry@master
-      working-directory: ${{ inputs.working_directory }}
       with:
+        working_directory: ${{ inputs.working_directory }}
         with_checks: 'false'
         # ToDo: Re-enable cache when https://github.com/actions/setup-python/issues/361 is fixed
         poetry_cache_enabled: 'false'
