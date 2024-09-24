@@ -11,14 +11,14 @@ This PR contains the following updates:
 | Package | Version Installed | Version Available
 |---|---|---|
 {% for package in items %}
-{% set table_row -%}
+{% set table_row %}
 | {{ package.package_name }} | {{ package.version_installed|default('-', true) }} | {{ package.version_available|default('-', true) }} |
-{%- endset %}
+{% endset %}
 {% if toplevel %}
-{% if  package.package_name in outdated_package_names %} {{ table_row }} {% endif %}
-{%  else %}
+{% if  package.package_name in outdated_package_names -%} {{ table_row }} {%- endif %}
+{% else -%}
 {{ table_row }}
-{% endif %}
+{%- endif %}
 {% endfor %}
 {% endfor %}
 
