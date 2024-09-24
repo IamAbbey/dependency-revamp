@@ -2,8 +2,7 @@ import re
 from dataclasses import dataclass
 from typing import Literal, Optional, Sequence
 
-from cleo.testers.application_tester import ApplicationTester
-from poetry.console.application import Application
+from actions_helper.common.utils import _run_process
 
 
 @dataclass
@@ -27,21 +26,18 @@ class UpdateCommandOutput:
     version_installed: Optional[str] = None
 
 
-app = Application()
-tester = ApplicationTester(app)
-
 # ?: makes or's | bracket a non-group
 VERSION_NUMBER_REGEX = r"\d+\.\d+\.?(?:\*|\d+)?.*"
 
 
 def process_outdated_packages() -> Sequence[ShowCommandOutput]:
-    status_code = tester.execute("show  --latest --top-level --no-ansi")
+    process = _run_process("poetry show  --latest --top-level --no-ansi", capture_output=True)
 
-    if status_code != 0:
-        print(tester.io.fetch_error())
-        raise
+    if process.returncode != 0:
+        print(process.stderr)
+        process.check_returncode()
 
-    output = tester.io.fetch_output()
+    output = process.stdout
 
     line_regex = re.compile(r"\s+")
 
@@ -92,13 +88,15 @@ def process_outdated_packages() -> Sequence[ShowCommandOutput]:
 
 
 def poetry_update(dry_run: bool) -> Sequence[UpdateCommandOutput]:
-    status_code = tester.execute(f"update {'--dry-run' if dry_run else ''}")
+    process = _run_process(f"poetry update {'--dry-run' if dry_run else ''}", capture_output=True)
 
-    if status_code != 0:
-        print(tester.io.fetch_error())
-        raise
+    # status_code = tester.execute("show  --latest --top-level --no-ansi")
 
-    output = tester.io.fetch_output()
+    if process.returncode != 0:
+        print(process.stderr)
+        process.check_returncode()
+
+    output = process.stdout
 
     line_regex = re.compile(
         # rf"- (Removing|Updating) ([^ ]+) \(({VERSION_NUMBER_REGEX})\s*[->]*\s*({VERSION_NUMBER_REGEX})?\)",
