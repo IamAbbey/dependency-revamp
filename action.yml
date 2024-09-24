@@ -32,6 +32,7 @@ runs:
     - name: Revamp dependencies
       shell: bash
       id: revamp-dependencies
+      working-directory: ${{ inputs.working_directory }}
       run: |
         poetry run actions_helper revamp-dependencies \
           --dry-run ${{ inputs.dry_run }} \
