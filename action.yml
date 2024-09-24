@@ -40,8 +40,6 @@ runs:
             eval "$(ssh-agent -s)"
             ssh-add - <<< "${{ inputs.ssh_key }}"
         fi
-        
-#        poetry install --directory ${{ github.action_path }}
 
         actions_helper revamp-dependencies \
           --dry-run ${{ inputs.dry_run }} \
