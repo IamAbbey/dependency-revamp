@@ -41,8 +41,8 @@ runs:
             ssh-add - <<< "${{ inputs.ssh_key }}"
         fi
         
-        poetry install --directory ${{ github.action_path }}
+#        poetry install --directory ${{ github.action_path }}
 
-        poetry run actions_helper revamp-dependencies \
+        actions_helper revamp-dependencies \
           --dry-run ${{ inputs.dry_run }} \
           --reviewers ${{ inputs.reviewers }}
