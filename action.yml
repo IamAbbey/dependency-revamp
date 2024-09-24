@@ -9,22 +9,21 @@ inputs:
     description: Dry run action
     default: 'true'
     required: false
+  working_directory:
+    description: "Working directory, defaults to GITHUB_WORKSPACE"
+    required: false
+    default: ${{ github.workspace }}
 
 
 runs:
   using: "composite"
 
   steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-        # https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
-        ssh-key: '${{ secrets.WORKFLOW_DEPLOY_KEY }}'
 
     - name: Setup Python + Poetry
       uses: moneymeets/action-setup-python-poetry@master
       with:
-        working_directory: ${{ github.action_path }}
+        working_directory: ${{ inputs.working_directory }}
         with_checks: 'false'
         # ToDo: Re-enable cache when https://github.com/actions/setup-python/issues/361 is fixed
         poetry_cache_enabled: 'false'
@@ -32,7 +31,7 @@ runs:
     - name: Revamp dependencies
       shell: bash
       id: revamp-dependencies
-      working-directory: ${{ github.action_path }}
+      working-directory: ${{ inputs.working_directory }}
       run: |
         poetry run actions_helper revamp-dependencies \
           --dry-run ${{ inputs.dry_run }}
