@@ -15,12 +15,8 @@ inputs:
     default: ${{ github.workspace }}
 
   ssh_key:
-    description: SSH key
+    description: "SSH key to use for private repositories"
     required: false
-  ssh_auth_sock:
-    description: SSH auth socket
-    required: false
-    default: /tmp/ssh_agent.sock
 
 
 runs:
@@ -37,21 +33,16 @@ runs:
         # ToDo: Re-enable cache when https://github.com/actions/setup-python/issues/361 is fixed
         poetry_cache_enabled: 'false'
 
-#    - name: Setup SSH agent
-#      if: inputs.ssh_key != ''
-#      id: setup-ssh-agent
-#      run: |
-#        export SSH_AUTH_SOCK=${{ inputs.ssh_auth_sock }}
-#        ssh-agent -a ${SSH_AUTH_SOCK} > /dev/null
-#        ssh-add - <<< "${{ inputs.ssh_key }}"
-#        echo "ssh-auth-sock=${SSH_AUTH_SOCK}" >> $GITHUB_OUTPUT
-#      shell: bash
-
     - name: Revamp dependencies
       shell: bash
       id: revamp-dependencies
       working-directory: ${{ inputs.working_directory }}
       run: |
+        if [ ! -z "${{ inputs.ssh_key }}" ]; then
+            eval "$(ssh-agent -s)"
+            ssh-add - <<< "${{ inputs.ssh_key }}"
+        fi
+
         poetry run --directory ${{ github.action_path }} actions_helper revamp-dependencies \
           --dry-run ${{ inputs.dry_run }} \
           --reviewers ${{ inputs.reviewers }}
