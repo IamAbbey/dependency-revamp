@@ -23,6 +23,7 @@ runs:
 
     - name: Setup Python + Poetry
       uses: moneymeets/action-setup-python-poetry@master
+      working-directory: ${{ inputs.working_directory }}
       with:
         with_checks: 'false'
         # ToDo: Re-enable cache when https://github.com/actions/setup-python/issues/361 is fixed
@@ -31,7 +32,6 @@ runs:
     - name: Revamp dependencies
       shell: bash
       id: revamp-dependencies
-      working-directory: ${{ inputs.working_directory }}
       run: |
         poetry run actions_helper revamp-dependencies \
           --dry-run ${{ inputs.dry_run }} \
