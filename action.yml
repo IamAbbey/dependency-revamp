@@ -36,6 +36,7 @@ runs:
         working_directory: ${{ inputs.working_directory }}
         with_checks: 'false'
         poetry_cache_enabled: 'false'
+        ssh_key: ${{ secrets.MERGEALOT_SSH_KEY }}
 
     - name: Revamp dependencies
       shell: bash
