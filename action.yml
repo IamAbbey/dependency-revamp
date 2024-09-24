@@ -1,6 +1,10 @@
 name: "Revamp dependencies"
 description: "Dependencies revamping"
 inputs:
+  reviewers:
+    description: Comma seperated names of reviewers for created PR
+    required: false
+    default: ''
   dry_run:
     description: Dry run action
     default: 'true'
@@ -12,6 +16,10 @@ runs:
 
   steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        # https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+        ssh-key: '${{ secrets.WORKFLOW_DEPLOY_KEY }}'
 
     - name: Setup Python + Poetry
       uses: moneymeets/action-setup-python-poetry@master
@@ -26,6 +34,6 @@ runs:
       id: revamp-dependencies
       working-directory: ${{ github.action_path }}
       run: |
-        
         poetry run actions_helper revamp-dependencies \
           --dry-run ${{ inputs.dry_run }}
+          --reviewers ${{ inputs.reviewers }}

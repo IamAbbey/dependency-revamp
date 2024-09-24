@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "revamp"
+name = "dependency-revamp"
 version = "0.1.0"
 description = "Dependencies revamping"
-authors = ["Abiodun Sotunde <abiodun.sotunde@moneymeets.com>"]
+authors = ["Abiodun Sotunde <sotundeabiodun00@gmail.com>"]
 
 packages = [
     { include = "actions_helper" }
@@ -12,9 +12,10 @@ packages = [
 python = "~3.12"
 
 click="*"
-poetry = "^1.8.3"
-cleo = "^2.1.0"
-pygithub = "^2.4.0"
+cleo="*"
+poetry="*"
+pygithub = "*"
+jinja2 = "*"
 
 [tool.poetry.dev-dependencies]
 ruff = "*"
