@@ -25,6 +25,7 @@ runs:
       uses: moneymeets/action-setup-python-poetry@master
       with:
         ssh_key: ${{ env.SSH_KEY }}
+        working_directory: ${{ inputs.working_directory }}
         with_checks: 'false'
         # ToDo: Re-enable cache when https://github.com/actions/setup-python/issues/361 is fixed
         poetry_cache_enabled: 'false'
