@@ -1,0 +1,34 @@
+## Dependency Revamp
+
+_(Pull request to demonstrate what a GitHub Action could do in the future, please don't merge for now)_
+
+This PR contains the following updates:
+{% for action, items in p_update|groupby("action") %}
+
+--------
+## {{ action }}
+
+| Package | Version Installed | Version Available
+|---|---|---|
+{% for package in items %}
+{% set table_row -%}
+| {{ package.package_name }} | {{ package.version_installed|default('-', true) }} | {{ package.version_available|default('-', true) }} |
+{%- endset %}
+{% if toplevel %}
+{% if  package.package_name in outdated_package_names %} {{ table_row }} {% endif %}
+{%  else %}
+{{ table_row }}
+{% endif %}
+{% endfor %}
+{% endfor %}
+
+{% if skipped %}
+--------
+## Skipped
+
+| Package | Version Installed | Version Available |
+|---|---|---|
+{% for package in skipped %}
+| {{ package.package_name }} | {{ package.version_installed }} | {{ package.version_available }} |
+{% endfor %}
+{% endif %}
