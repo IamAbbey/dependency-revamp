@@ -23,8 +23,6 @@ runs:
   using: "composite"
 
   steps:
-    - uses: actions/checkout@v4
-
     - name: Setup Python + Poetry
       uses: moneymeets/action-setup-python-poetry@master
       with:
