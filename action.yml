@@ -34,9 +34,8 @@ runs:
     - name: Revamp dependencies
       shell: bash
       id: revamp-dependencies
+      working-directory: ${{ inputs.working_directory }}
       run: |
-        cd ${{ inputs.working_directory }}
-        
         if [ ! -z "${{ inputs.ssh_key }}" ]; then
             eval "$(ssh-agent -s)"
             ssh-add - <<< "${{ inputs.ssh_key }}"
