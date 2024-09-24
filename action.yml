@@ -44,6 +44,10 @@ runs:
       working-directory: ${{ inputs.working_directory }}
       run: |
         
+        which python
+        
+        poetry env info
+        
         if [ ! -z "${{ inputs.ssh_key }}" ]; then
             eval "$(ssh-agent -s)"
             ssh-add - <<< "${{ inputs.ssh_key }}"
