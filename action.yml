@@ -52,7 +52,6 @@ runs:
       id: revamp-dependencies
       working-directory: ${{ github.action_path }}
       run: |
-        cd ${{ inputs.working_directory }}
         poetry run --directory ${{ github.action_path }} actions_helper revamp-dependencies \
           --dry-run ${{ inputs.dry_run }} \
           --reviewers ${{ inputs.reviewers }}
