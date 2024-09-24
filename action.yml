@@ -31,6 +31,14 @@ runs:
         # ToDo: Re-enable cache when https://github.com/actions/setup-python/issues/361 is fixed
         poetry_cache_enabled: 'false'
 
+    - name: Setup Python + Poetry
+      uses: moneymeets/action-setup-python-poetry@master
+      with:
+        working_directory: ${{ inputs.working_directory }}
+        with_checks: 'false'
+        # ToDo: Re-enable cache when https://github.com/actions/setup-python/issues/361 is fixed
+        poetry_cache_enabled: 'false'
+
     - name: Revamp dependencies
       shell: bash
       id: revamp-dependencies
