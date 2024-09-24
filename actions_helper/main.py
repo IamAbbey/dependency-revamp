@@ -40,3 +40,7 @@ def cmd_revamp(dry_run: str, reviewers: str, toplevel: str):
         )
     else:
         print(rendered_message)
+
+
+if __name__ == "__main__":
+    cli()
