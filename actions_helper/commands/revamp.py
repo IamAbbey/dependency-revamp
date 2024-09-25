@@ -42,7 +42,6 @@ def process_outdated_packages(revamp_dir: Path) -> Sequence[ShowCommandOutput]:
         process.check_returncode()
 
     output = process.stdout
-    print(output)
 
     line_regex = re.compile(r"\s+")
 
@@ -105,7 +104,6 @@ def poetry_update(dry_run: bool, revamp_dir: Path) -> Sequence[UpdateCommandOutp
         process.check_returncode()
 
     output = process.stdout
-    print(output)
 
     line_regex = re.compile(
         # rf"- (Removing|Updating) ([^ ]+) \(({VERSION_NUMBER_REGEX})\s*[->]*\s*({VERSION_NUMBER_REGEX})?\)",

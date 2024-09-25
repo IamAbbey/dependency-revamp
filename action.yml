@@ -30,7 +30,6 @@ runs:
         with_checks: 'false'
         poetry_cache_enabled: 'false'
 
-    # Step 3: Use the first environment
     - id: action-virtual-path
       shell: bash
       working-directory: ${{ github.action_path }}
@@ -54,7 +53,6 @@ runs:
       run: |
         ACTION_VIRTUAL_ENV_PATH=${{ steps.action-virtual-path.outputs.venv-path }}
         
-        ls $ACTION_VIRTUAL_ENV_PATH/bin
         export PATH="$ACTION_VIRTUAL_ENV_PATH/bin:$PATH"
         
         if [ ! -z "${{ inputs.ssh_key }}" ]; then
@@ -64,5 +62,4 @@ runs:
 
         actions_helper revamp-dependencies \
           --dry-run ${{ inputs.dry_run }} \
-          --reviewers ${{ inputs.reviewers }} \
-          --revamp-dir ${{ inputs.working_directory }}
+          --reviewers ${{ inputs.reviewers }}
