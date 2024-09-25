@@ -36,7 +36,7 @@ runs:
       working-directory: ${{ github.action_path }}
       run: |
         VIRTUAL_ENV_PATH=$(find ~/.cache/pypoetry/virtualenvs -type d -maxdepth 1 | tail -n 1)
-        echo VIRTUAL_ENV_PATH
+        echo $VIRTUAL_ENV_PATH
         echo "venv-path=$VIRTUAL_ENV_PATH" >> $GITHUB_OUTPUT
 
     - name: Setup Python + Poetry
