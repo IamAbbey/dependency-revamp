@@ -31,13 +31,12 @@ runs:
         poetry_cache_enabled: 'false'
 
     # Step 3: Use the first environment
-    - name: Get github action virtual path
+    - id: action-virtual-path
       shell: bash
-      id: action-virtual-path
       working-directory: ${{ github.action_path }}
       run: |
+        poetry env info --path
         ACTION_VIRTUAL_ENV_PATH=$(poetry env info --path)
-        echo $ACTION_VIRTUAL_ENV_PATH
         echo "venv-path=$ACTION_VIRTUAL_ENV_PATH" >> $GITHUB_OUTPUT
 
     - name: Setup Python + Poetry
