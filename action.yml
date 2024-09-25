@@ -30,6 +30,16 @@ runs:
         with_checks: 'false'
         poetry_cache_enabled: 'false'
 
+    # Step 3: Use the first environment
+    - name: Get github action virtual path
+      shell: bash
+      id: action-virtual-path
+      working-directory: ${{ github.action_path }}
+      run: |
+        ACTION_VIRTUAL_ENV_PATH=$(poetry env info --path)
+        echo $ACTION_VIRTUAL_ENV_PATH
+        echo "venv-path=$ACTION_VIRTUAL_ENV_PATH" >> $GITHUB_OUTPUT
+
     - name: Setup Python + Poetry
       uses: moneymeets/action-setup-python-poetry@master
       with:
@@ -43,17 +53,17 @@ runs:
       id: revamp-dependencies
       working-directory: ${{ inputs.working_directory }}
       run: |
+        ACTION_VIRTUAL_ENV_PATH=${{ steps.action-virtual-path.outputs.venv-path }}
         
-        which python
-        
-        poetry env info
+        ls $ACTION_VIRTUAL_ENV_PATH/bin
+        export PATH="$ACTION_VIRTUAL_ENV_PATH/bin:$PATH"
         
         if [ ! -z "${{ inputs.ssh_key }}" ]; then
             eval "$(ssh-agent -s)"
             ssh-add - <<< "${{ inputs.ssh_key }}"
         fi
 
-        poetry run --directory ${{ github.action_path }} actions_helper revamp-dependencies \
+        actions_helper revamp-dependencies \
           --dry-run ${{ inputs.dry_run }} \
           --reviewers ${{ inputs.reviewers }} \
           --revamp-dir ${{ inputs.working_directory }}
